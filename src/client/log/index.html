@@ -1,0 +1,21 @@
+<script
+  async
+  src="index.js"
+  data-telegram-login="samplebot"
+  data-size="large"
+  data-onauth="onTelegramAuth(user)"
+></script>
+<script type="text/javascript">
+  function onTelegramAuth(user) {
+    alert(
+      "Logged in as " +
+        user.first_name +
+        " " +
+        user.last_name +
+        " (" +
+        user.id +
+        (user.username ? ", @" + user.username : "") +
+        ")"
+    );
+  }
+</script>

@@ -1,0 +1,11 @@
+version: "3.5"
+
+services:
+  voter:
+    container_name: voter_container
+    image: somebeyti/voter:latest
+    ports:
+      - "9898:9898"
+    # command: sh -c "postgres -U user -c wal_level = hot_standby && postgres -c wal_keep_segments = 1000"
+    restart: unless-stopped
+    command: sh -c "yarn raw:core"

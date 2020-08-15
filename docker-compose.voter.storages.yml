@@ -1,0 +1,33 @@
+version: "3.5"
+
+services:
+  slaveB_postgres:
+    container_name: vote_db_container
+    image: postgres
+    environment:
+      POSTGRES_USER: "${DATABASE_POSTGRES_USER:-user}"
+      POSTGRES_PASSWORD: "${DATABASE_POSTGRES_PASSWORD:-1}"
+      PGDATA: /data/postgres
+    volumes:
+      - pgdata:/data/postgres
+      - ./backups:/backups
+    ports:
+      - "${DATABASE_POSTGRES_PORT:-5801}:5432"
+    # command: sh -c "postgres -U user -c wal_level = hot_standby && postgres -c wal_keep_segments = 1000"
+    restart: unless-stopped
+
+  vote_admin:
+    container_name: vote_admin_container
+    image: dpage/pgadmin4:4.21
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "${DATABASE_PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}"
+      PGADMIN_DEFAULT_PASSWORD: "${DATABASE_PGADMIN_DEFAULT_PASSWORD:-admin}"
+    volumes:
+      - ./tmp/storages/knomary_pgadmin:/root/.pgadmin
+    ports:
+      - "${DATABASE_PGADMIN_PORT}:80"
+    restart: unless-stopped
+    depends_on:
+      - slaveB_postgres
+volumes:
+  pgdata:

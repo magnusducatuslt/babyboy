@@ -1,0 +1,9 @@
+
+*.lock
+.gitignore
+.prettierrc
+docker-compose.develop.yml
+yarn-error.log
+npm-debug.log
+.vscode
+node_modules
