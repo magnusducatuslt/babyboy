@@ -12,15 +12,15 @@
     "db:seed:undo": "yarn build && node ./tools/seed-db.js down",
     "db:migrate": "yarn build && node ./tools/migrate-db.js up",
     "db:migrate:undo": "yarn build && node ./tools/migrate-db.js down",
-    "start:env": "docker-compose -f docker-compose.storages.yml up -d --force-recreate",
+    "start:env": "docker-compose -f docker-compose.voter.storages.yml up -d --force-recreate",
     "start:core": "cp .envLOCAL .env && yarn build && ts-node --files ./src/services/core/bin/www.ts --out-put dist",
-    "run:wallet": "ts-node ./src/services/wallet/wallet.js",
+    "run:wallet": "ts-node ./src/services/wallet/wallet.ts",
     "run:send": "ts-node ./src/services/wallet/send.js",
     "raw:core": "node ./dist/src/services/core/bin/www.js",
     "image": "cp .envDEV .env && yarn build && docker image build --tag somebeyti/voter:latest .",
     "container": "docker-compose -f docker-compose.voter.app.yml up",
     "login": "docker login --username=somebeyti --password=nahuipass1488",
-    "taging": "docker tag c9d422ac991f somebeyti/voter:latest",
+    "taging": "docker tag 69ecad482cab somebeyti/voter:latest",
     "push": "docker push somebeyti/voter:latest"
   },
   "dependencies": {
@@ -30,6 +30,8 @@
     "minter-js-sdk": "^0.32.1",
     "minterjs-util": "^0.16.2",
     "minterjs-wallet": "^4.0.4",
+    "redis": "^3.0.2",
+    "telegraf": "^3.38.0",
     "telegram-passport": "^1.0.5"
   },
   "devDependencies": {
@@ -107,6 +109,7 @@
     "@core/modules/cache": "dist/src/modules/cache/index",
     "@core/db": "dist/src/db/index",
     "@core/models": "dist/src/models",
-    "@core/cache": "dist/src/cache/index"
+    "@core/cache": "dist/src/cache/index",
+    "@core/wallet": "dist/src/services/wallet"
   }
 }

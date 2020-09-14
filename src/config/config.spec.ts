@@ -8,6 +8,17 @@ describe("config", () => {
 
     expect(config).toMatchObject({
       env: expect.any(String),
+      telegram: {
+        botToken: expect.any(String),
+        clientUrl: expect.any(String),
+      },
+      blockchain: {
+        senderSeed: expect.any(String),
+        chainId: expect.any(Number),
+        baseUrl: expect.any(String),
+        coin: expect.any(String),
+        gasCoin: expect.any(String),
+      },
       queue: {
         port: expect.any(Number),
         domain: expect.any(String),

@@ -24,6 +24,17 @@ function normalizeNumber(val: string) {
 
 const config = {
   env: envVars.NODE_ENV,
+  telegram: {
+    botToken: envVars.BOT_TOKEN,
+    clientUrl: envVars.CLIENT_URL,
+  },
+  blockchain: {
+    senderSeed: envVars.SENDER_SEED,
+    chainId: envVars.CHAIN_ID,
+    baseUrl: envVars.BASE_URL,
+    coin: envVars.COIN,
+    gasCoin: envVars.GAS_COIN,
+  },
   mail: {
     confirmationURL: `${envVars.AUTH_DOMAIN}${envVars.CONFORMATION_URL}`,
     confirmTemplate: envVars.CONFIRMATION_TEMPLATE,

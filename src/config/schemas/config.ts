@@ -2,6 +2,13 @@ import * as Joi from "joi";
 
 export const configSchema = Joi.object()
   .keys({
+    CLIENT_URL: Joi.string().required(),
+    BOT_TOKEN: Joi.string().required(),
+    SENDER_SEED: Joi.string().required(),
+    CHAIN_ID: Joi.number().required(),
+    BASE_URL: Joi.string().required(),
+    COIN: Joi.string().required(),
+    GAS_COIN: Joi.string().required(),
     NODE_ENV: Joi.string(),
     MAILGUN_APIKEY: Joi.string().required(),
     MAILGUN_DOMAIN: Joi.string().required(),

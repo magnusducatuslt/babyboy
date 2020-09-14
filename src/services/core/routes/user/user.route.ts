@@ -4,40 +4,43 @@ export async function userController(
   res: Response,
   next: NextFunction
 ) {
-  const { db, log } = req;
+  const { db, cache, log } = req;
   const t = await db.sequelize.transaction();
 
   try {
     const { id } = req.params;
 
-    const user = await db.User.findOne({
-      where: {
-        telegramId: id,
-      },
-      transaction: t,
-    });
+    const token = await cache.get({ key: id });
+    let parsedUserId = 0;
 
-    if (!user) {
-      log.debug("userController: user doesnt exist", id);
+    if (token) {
+      parsedUserId = +token.userId;
+      const user = await db.User.findOne({
+        where: {
+          telegramId: parsedUserId,
+        },
+        transaction: t,
+      });
+
+      if (!user) {
+        throw new Error(`userController: user doesnt exist ${id}`);
+      }
 
       await t.commit();
 
-      res
-        .status(401)
-        .send(JSON.stringify({ status: 1, message: "USER_DOESNT_EXIT" }));
+      res.status(200).send(
+        JSON.stringify({
+          status: 0,
+          message: {
+            telegramId: user.telegramId ? true : false,
+            wallet: user.wallet,
+          },
+        })
+      );
+
       return;
     }
-
-    await t.commit();
-
-    res.status(200).send(
-      JSON.stringify({
-        status: 0,
-        message: { telegramId: user.telegramId, wallet: user.wallet },
-      })
-    );
-
-    return;
+    throw new Error("token doesnt exist");
   } catch (e) {
     log.debug(`userController:`, e);
     await t.rollback();

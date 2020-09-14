@@ -1,27 +1,30 @@
 Arguments: 
-  /Users/magnusducatuslt/.nvm/versions/node/v12.14.1/bin/node /usr/local/Cellar/yarn/1.21.1/libexec/bin/yarn.js add Результаты поиска
+  /Users/macbook/.nvm/versions/node/v12.18.0/bin/node /usr/local/bin/yarn login
 
 PATH: 
-  /Users/magnusducatuslt/.cargo/bin:/Users/magnusducatuslt/.nvm/versions/node/v12.14.1/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/Users/magnusducatuslt/.cargo/bin:/Users/magnusducatuslt/Library/Python/2.7/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Users/magnusducatuslt/Library/Python/2.7/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin
+  /Users/macbook/.nvm/versions/node/v12.18.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/macbook/.nvm/versions/node/v12.18.0/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin
 
 Yarn version: 
-  1.21.1
+  1.22.4
 
 Node version: 
-  12.14.1
+  12.18.0
 
 Platform: 
   darwin x64
 
 Trace: 
-  TypeError [ERR_UNESCAPED_CHARACTERS]: Request path contains unescaped characters
-      at new ClientRequest (_http_client.js:139:13)
-      at Object.request (https.js:309:10)
-      at Request.module.exports.Request.start (/usr/local/Cellar/yarn/1.21.1/libexec/lib/cli.js:141227:32)
-      at Request.module.exports.Request.end (/usr/local/Cellar/yarn/1.21.1/libexec/lib/cli.js:141986:10)
-      at end (/usr/local/Cellar/yarn/1.21.1/libexec/lib/cli.js:141040:14)
-      at Immediate._onImmediate (/usr/local/Cellar/yarn/1.21.1/libexec/lib/cli.js:141054:7)
-      at processImmediate (internal/timers.js:439:21)
+  Error: canceled
+      at Interface.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:137008:13)
+      at Interface.emit (events.js:315:20)
+      at Interface._ttyWrite (readline.js:866:16)
+      at ReadStream.onkeypress (readline.js:205:10)
+      at ReadStream.emit (events.js:315:20)
+      at emitKeys (internal/readline/utils.js:335:14)
+      at emitKeys.next (<anonymous>)
+      at ReadStream.onData (readline.js:1133:36)
+      at ReadStream.emit (events.js:315:20)
+      at addChunk (_stream_readable.js:295:12)
 
 npm manifest: 
   {
@@ -39,16 +42,19 @@ npm manifest:
       "db:migrate": "yarn build && node ./tools/migrate-db.js up",
       "db:migrate:undo": "yarn build && node ./tools/migrate-db.js down",
       "start:env": "docker-compose -f docker-compose.storages.yml up -d --force-recreate",
-      "start:core": "yarn build && ts-node --files ./src/services/core/bin/www.ts --out-put dist",
-      "run:wallet": "ts-node ./src/wallet/wallet.js",
+      "start:core": "cp .envLOCAL .env && yarn build && ts-node --files ./src/services/core/bin/www.ts --out-put dist",
+      "run:wallet": "ts-node ./src/services/wallet/wallet.js",
+      "run:send": "ts-node ./src/services/wallet/send.js",
       "raw:core": "node ./dist/src/services/core/bin/www.js",
-      "image": "docker image build --tag somebeyti/voter:latest .",
+      "image": "cp .envDEV .env && yarn build && docker image build --tag somebeyti/voter:latest .",
       "container": "docker-compose -f docker-compose.voter.app.yml up",
       "login": "docker login --username=somebeyti --password=nahuipass1488",
-      "taging": "docker tag 832bba5f7383 somebeyti/voter:latest",
+      "taging": "docker tag 66f95848e755 somebeyti/voter:latest",
       "push": "docker push somebeyti/voter:latest"
     },
     "dependencies": {
+      "@types/cors": "^2.8.7",
+      "@types/crypto-js": "^3.1.47",
       "crypto-js": "^4.0.0",
       "minter-js-sdk": "^0.32.1",
       "minterjs-util": "^0.16.2",
@@ -783,6 +789,18 @@ Lockfile:
     integrity sha512-2+FrkXY4zllzTNfJth7jOqEHC+enpLeGslEhpnTAkg21GkRrWV4SsAtqchtT4YS9/nODBU2/ZfsBY2X4J/dX7A==
     dependencies:
       "@types/node" "*"
+  
+  "@types/cors@^2.8.7":
+    version "2.8.7"
+    resolved "https://registry.yarnpkg.com/@types/cors/-/cors-2.8.7.tgz#ab2f47f1cba93bce27dfd3639b006cc0e5600889"
+    integrity sha512-sOdDRU3oRS7LBNTIqwDkPJyq0lpHYcbMTt0TrjzsXbk/e37hcLTH6eZX7CdbDeN0yJJvzw9hFBZkbtCSbk/jAQ==
+    dependencies:
+      "@types/express" "*"
+  
+  "@types/crypto-js@^3.1.47":
+    version "3.1.47"
+    resolved "https://registry.yarnpkg.com/@types/crypto-js/-/crypto-js-3.1.47.tgz#36e549dd3f1322742a3a738e7c113ebe48221860"
+    integrity sha512-eI6gvpcGHLk3dAuHYnRCAjX+41gMv1nz/VP55wAe5HtmAKDOoPSfr3f6vkMc08ov1S0NsjvUBxDtHHxqQY1LGA==
   
   "@types/eslint-visitor-keys@^1.0.0":
     version "1.0.0"

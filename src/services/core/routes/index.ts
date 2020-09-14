@@ -4,7 +4,6 @@ import { healthController } from "./health";
 import { registrationRouter } from "./registration";
 import { addressRouter } from "./address";
 import { candidateRouter } from "./candidates";
-import { telegramRouter } from "./telegram";
 import { votedRouter } from "./voted";
 import { userRouter } from "./user";
 
@@ -15,7 +14,6 @@ const routes = express.Router();
 routes.use("/registration", registrationRouter);
 routes.use("/address", addressRouter);
 routes.use("/candidates", candidateRouter);
-routes.use("/telegram", telegramRouter);
 routes.get("/health", healthController);
 routes.use("/voted", votedRouter);
 routes.use("/user", userRouter);

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { Op } from "sequelize";
+import { sendVotingPayments } from "@core/wallet";
 import { RegistrationParams } from "@core/models";
 export async function registrationController(
   req: Request,
@@ -10,7 +10,9 @@ export async function registrationController(
     db,
     log,
     body: { id, address },
+    cache,
   }: RegistrationParams = req;
+
   const t = await db.sequelize.transaction();
   try {
     const isAddressExist = await db.Address.findOne({
@@ -19,54 +21,38 @@ export async function registrationController(
       },
       transaction: t,
     });
-
     if (isAddressExist) {
-      log.debug("isAddressExist already exist", isAddressExist.address);
-
-      await t.commit();
-
-      res.status(403).send(
-        JSON.stringify({
-          status: 1,
-          message: "USER_OR_ADDRESS_ALREADY_EXIST",
-        })
+      throw new Error(
+        `isAddressExist already exist
+        ${isAddressExist.address}`
       );
-      return;
     }
+    const token = await cache.get({ key: id });
+
+    if (!token) {
+      throw new Error(`token doesnt exist`);
+    }
+
     const user = await db.User.findOne({
-      where: { telegramId: Number.parseInt(id) },
+      where: { telegramId: Number.parseInt(token.userId) },
       transaction: t,
     });
 
     if (!user) {
-      log.debug("user doesn't exist");
-
-      await t.commit();
-
-      res.status(401).send(
-        JSON.stringify({
-          status: 1,
-          message: "USER_DOESN'T_EXIST",
-        })
-      );
-      return;
+      throw new Error("user doesn't exist");
     }
+
     if (user.wallet) {
-      log.debug("user already has wallet");
-
-      await t.commit();
-
-      res.status(401).send(
-        JSON.stringify({
-          status: 1,
-          message: "USER_ALREADY_HAVE_WALLET",
-        })
-      );
-      return;
+      throw new Error("user already has wallet");
     }
+
     await db.Address.create({ address, transaction: t });
 
     await user.update({ wallet: true, transaction: t });
+
+    await sendVotingPayments(address);
+
+    await cache.deleteKey({ key: id });
 
     await t.commit();
 

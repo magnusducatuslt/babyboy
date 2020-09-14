@@ -1,7 +1,6 @@
 export type TelegramParams = {
   body: TelegramBodyParams;
 };
-
 export type TelegramBodyParams = {
   message: TelegramMessage;
   update_id?: number;

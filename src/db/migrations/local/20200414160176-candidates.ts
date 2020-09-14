@@ -22,6 +22,10 @@ module.exports = {
         type: DataTypes.STRING(250),
         allowNull: false,
       },
+      img: {
+        type: DataTypes.STRING(250),
+        allowNull: false,
+      },
       createdAt: {
         type: DataTypes.DATE,
       },

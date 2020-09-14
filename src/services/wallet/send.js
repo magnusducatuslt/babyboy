@@ -50,7 +50,7 @@ const txMultySend = {
   gasCoin: "MNT",
   payload: "custom message",
 };
-async function startChain() {
+export async function sendMoney() {
   try {
     let nonceForSender = null;
     let nonceForReciever = null;

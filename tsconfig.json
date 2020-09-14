@@ -43,7 +43,8 @@
       "@core/modules/cache": ["./../src/modules/cache/index.ts"],
       "@core/db": ["./../src/db/index.ts"],
       "@core/cache": ["./../src/cache/index.ts"],
-      "@core/models": ["./../src/models"]
+      "@core/models": ["./../src/models"],
+      "@core/wallet": ["./../src/services/wallet"]
     }
   },
   "exclude": ["node_modules", "dist", "jest.config.js"]

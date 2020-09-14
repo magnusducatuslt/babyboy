@@ -7,7 +7,7 @@ interface Candidate extends Model {
 
   name: string;
   address: string;
-
+  img: string;
   readonly createdAt: Date;
   readonly updatedAt: Date;
 }
@@ -32,6 +32,10 @@ export const Candidate = (dbService: Sequelize) => {
       allowNull: false,
     },
     address: {
+      type: DataTypes.STRING(250),
+      allowNull: false,
+    },
+    img: {
       type: DataTypes.STRING(250),
       allowNull: false,
     },
